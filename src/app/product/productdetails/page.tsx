@@ -1,4 +1,5 @@
 'use client'
+
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -16,10 +17,14 @@ const ProductDetails = () => {
   useEffect(() => {
     if (id) {
       // Fetch the product details using the ID
-      fetch(`https://pharmaconnect-backend.onrender.com/products/getProduct/${id}`)
+      fetch(`https://pharmaconnect-backend.onrender.com/products/getProductById/${id}`)
         .then((res) => res.json())
         .then((data) => {
-          setProduct(data.data);
+          if (data.data) {
+            setProduct(data.data);
+          } else {
+            setError("Product not found.");
+          }
           setLoading(false);
         })
         .catch((error) => {
@@ -69,7 +74,7 @@ const ProductDetails = () => {
                   Add to Cart
                 </button>
                 <Link
-                  href="/product"
+                  href="/product" // Ensure this links to the correct page
                   className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg font-medium transition-transform transform hover:scale-105"
                 >
                   Back to Products

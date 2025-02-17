@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import ProductDetails from "../product/productdetails/page";
+import ProductDetails from "../productdetails/page";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
