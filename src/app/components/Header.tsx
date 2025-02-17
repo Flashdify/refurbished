@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { IoCartSharp } from "react-icons/io5";
+import { VscAccount } from "react-icons/vsc";
+
 
 const Header = () => {
   const [isLoginPage, setIsLoginPage] = useState(false);
@@ -44,31 +46,37 @@ const Header = () => {
           </Link>
         </div>
         <nav>
-          <ul className="flex space-x-4 items-center">
-            <li>
-              <Link href="/cart" className="hover:text-gray-300 flex items-center">
-                <div className="border border-black p-2 rounded-full flex items-center justify-center w-10 h-10">
-                  <IoCartSharp className="text-xl" />
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link href="/home" className="hover:text-gray-300 flex items-center">
-                <div className="border border-black p-2 rounded-full flex items-center justify-center px-4 py-2">
-                  Home
-                </div>
-              </Link>
-            </li>
-            {!isLoginPage && (
-              <li>
-                <Link href="/login" className="hover:text-gray-300 flex items-center">
-                  <div className="border border-black p-2 rounded-full flex items-center justify-center px-4 py-2">
-                    Log In
-                  </div>
-                </Link>
-              </li>
-            )}
-          </ul>
+        <ul className="flex space-x-6 items-center">
+  {/* Cart Icon */}
+  <li>
+    <Link href="/cart" className="hover:text-gray-300 flex items-center">
+      <div className="border border-black p-3 rounded-full flex items-center justify-center w-12 h-12">
+        <IoCartSharp className="text-2xl" /> {/* Icon size */}
+      </div>
+    </Link>
+  </li>
+
+  {/* Home Link (conditional based on isLoginPage) */}
+  {!isLoginPage && (
+    <li>
+      <Link href="/home" className="hover:text-gray-300 flex items-center">
+        <div className="border border-black p-3 rounded-full flex items-center justify-center px-5 py-2">
+          <span className="text-lg font-medium">Home</span> {/* Adjusted text size */}
+        </div>
+      </Link>
+    </li>
+  )}
+
+  {/* Login Icon Only */}
+  <li>
+    <Link href="/login" className="hover:text-gray-300 flex items-center">
+      <div className="border border-black p-3 rounded-full flex items-center justify-center w-12 h-12">
+        <VscAccount className="text-2xl" /> {/* Icon size */}
+      </div>
+    </Link>
+  </li>
+</ul>
+
         </nav>
       </div>
     </header>
