@@ -53,9 +53,12 @@ const LoginPage = () => {
       );
 
       console.log("Backend Response:", res.data);
-
+      
       if (res.data.success) {
+        // Store token in localStorage
+        localStorage.setItem("token", res.data.token);
         router.push("../home");
+       
       } else {
         setError({
           general: res.data.message || "Invalid credentials",
