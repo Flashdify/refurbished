@@ -4,20 +4,37 @@ import Footer from "../components/Footer";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import ProductDetails from "../productdetails/page";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [loading, setLoading] = useState(true); // To track loading state
-  const [error, setError] = useState(null); // To track any errors
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
-    fetch("https://pharmaconnect-backend.onrender.com/products/getAllProduct") // Fetch all products from backend API
-      .then((res) => res.json())
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+
+    if (!token) {
+      router.push("/login"); // Redirect to login if no token
+      return;
+    }
+
+    fetch("https://pharmaconnect-backend.onrender.com/products/getAllProduct", {
+      headers: {
+        Authorization: `Bearer ${token}`, // Attach token to request
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Unauthorized");
+        }
+        return res.json();
+      })
       .then((data) => {
         setProducts(data.data);
-        setFeaturedProducts(data.data.slice(0, 4)); // Selecting first 4 products as featured
+        setFeaturedProducts(data.data.slice(0, 4));
         setLoading(false);
       })
       .catch((error) => {
@@ -27,11 +44,11 @@ const Home = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Display loading state
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message if any
+    return <div>{error}</div>;
   }
 
   return (
@@ -70,12 +87,12 @@ const Home = () => {
                 className="border rounded-lg p-6 text-center hover:shadow-xl transition-shadow duration-300"
               >
                 <Image
-                  src={product.image} // Ensure this URL is correct and accessible
+                  src={product.image}
                   alt={product.name}
                   width={150}
                   height={150}
                   className="mx-auto mb-4"
-                  unoptimized // Use this if you are fetching images from an external source and Next.js optimization is causing issues
+                  unoptimized
                 />
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   {product.name}
@@ -84,10 +101,10 @@ const Home = () => {
                   ${product.price}
                 </p>
                 <Link href={`/productdetails/${product._id}`}>
-  <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg font-medium transition-transform transform hover:scale-105">
-    View Details
-  </button>
-</Link>
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg font-medium transition-transform transform hover:scale-105">
+                    View Details
+                  </button>
+                </Link>
               </div>
             ))}
           </div>

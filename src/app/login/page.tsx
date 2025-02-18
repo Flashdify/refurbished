@@ -39,6 +39,11 @@ const LoginPage = () => {
       router.push("../admin"); // Redirect to admin page
       return;
     }
+    if (formData.email === "dummy@gmail.com" && formData.password === "dummy@123") {
+      router.push("../admin/pharmacist"); // Redirect to pharmacist page
+      return;
+    }
+
 
     // Make the API call if it's not the admin
     try {
